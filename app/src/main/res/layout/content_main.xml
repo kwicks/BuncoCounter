@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="kate.simkowick.com.buncocounter.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/undoButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:onClick="undoLast"
+                android:text="Undo" />
+
+            <Button
+                android:id="@+id/customButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="switchScreenCustomPoints"
+                android:text="Custom" />
+
+            <Button
+                android:id="@+id/clearButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:onClick="resetGame"
+                android:text="Clear" />
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/customText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:ems="10"
+                android:inputType="number"
+                android:text="21" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="20dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <TextView
+                android:id="@+id/usScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0"
+                android:textAppearance="@android:style/TextAppearance.Material.Display2"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/themScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0"
+                android:textAppearance="@android:style/TextAppearance.Material.Display2"
+                android:textColor="@color/colorAccent" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <TextView
+                android:id="@+id/usLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Us"
+                android:textAppearance="@android:style/TextAppearance.Material.Display1"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/themLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Them"
+                android:textAppearance="@android:style/TextAppearance.Material.Display1"
+                android:textColor="@color/colorAccent" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <Button
+                android:id="@+id/usBuncoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:onClick="addUsBunco"
+                android:text="Bunco!"
+                android:textAppearance="@android:style/TextAppearance.Material.Button"
+                android:textColor="@color/buncoTextColor" />
+
+            <Button
+                android:id="@+id/themBuncoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorAccent"
+                android:gravity="center"
+                android:onClick="addThemBunco"
+                android:text="Bunco!"
+                android:textAppearance="@android:style/TextAppearance.Material.Button"
+                android:textColor="@color/buncoTextColor" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <Button
+                android:id="@+id/usFiveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:onClick="addFiveUsScore"
+                android:text="+ 5"
+                android:textAppearance="@android:style/TextAppearance.Material.Button"
+                android:textColor="@color/buncoTextColor"
+                android:textSize="32sp" />
+
+            <Button
+                android:id="@+id/themFiveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorAccent"
+                android:gravity="center"
+                android:onClick="addFiveThemScore"
+                android:text="+ 5"
+                android:textAppearance="@android:style/TextAppearance.Material.Button"
+                android:textColor="@color/buncoTextColor"
+                android:textSize="32sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <Button
+                android:id="@+id/usOneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:gravity="center"
+                android:onClick="addOneUsScore"
+                android:text="+ 1"
+                android:textAppearance="@android:style/TextAppearance.Material.Button"
+                android:textColor="@color/buncoTextColor"
+                android:textSize="32sp" />
+
+            <Button
+                android:id="@+id/themOneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorAccent"
+                android:gravity="center"
+                android:onClick="addOneThemScore"
+                android:text="+ 1"
+                android:textAppearance="@android:style/TextAppearance.Material.Button"
+                android:textColor="@color/buncoTextColor"
+                android:textSize="32sp" />
+
+        </TableRow>
+    </TableLayout>
+</android.support.constraint.ConstraintLayout>

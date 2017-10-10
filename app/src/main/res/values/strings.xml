@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Bunco Counter</string>
+    <string name="action_settings">Clear</string>
+    <string name="action_settings2">Custom</string>
+</resources>
