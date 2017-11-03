@@ -22,8 +22,6 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //return super.onStartCommand(intent, flags, startId);
-       // Log.i(TAG, "onStartCommand call");
 
         Runnable r = new Runnable() {
             @Override
@@ -34,7 +32,6 @@ public class MyService extends Service {
                         synchronized (this) {
                             try {
                                 wait(futureTime - System.currentTimeMillis());
-                               // Log.i(TAG, "L42 loop " + i + " finished");
                             } catch (Exception e) {
 
                             }
@@ -53,7 +50,6 @@ public class MyService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //Log.i(TAG, "onDestroy was called");
     }
 
     @Override
