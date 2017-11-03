@@ -1,7 +1,7 @@
 package kate.simkowick.com.buncocounter;
 
 // counter to help you keep track of the bunco score
-//  need to implement undo, improve look, put customizing in menu, add color schemes to choose from
+//  todo improve look, add color schemes to choose from
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,31 +9,18 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
 import java.util.*;
-
 
 public class MainActivity extends AppCompatActivity {
 
     public int usPoints = 0;
     public int themPoints = 0;
     public int buncoPointsValue = 21;
-    public int subtractUndoPoints;
-    public boolean subtractUndoPointsType;
-    public int logPointsStacked;
-    public boolean logPointsType;
-    public String tellMeType;
-    public int onePoint = 1; // add to stack for undo value
-    public int fivePoint = 5; // add to stack for undo value
-    public int totalNumber;
-    public int addingNumber;
+    public undoItem subtractUndoPoints;
+    public undoItem logPointsStacked;
 
-    Stack<Integer> undoPointsStack = new Stack<Integer>();
-    Stack<Boolean> undoPointsType = new Stack<Boolean>();
+    Stack<undoItem> undoPointsStack = new Stack<undoItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +28,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        undoPointsStack.push(0);
-        undoPointsType.push(true);
 
-        //allows class to except extra information from customBunco.java
+
+        // For custom bunco score value. Allows class to except extra information from customBunco.java
         Bundle buncoData = getIntent().getExtras();
         if(buncoData== null) {
             return;
@@ -55,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
         customText.setText(buncoMessage);
 
         if(buncoMessage != null){
-            //if(customText != null && !customText.trim().isEmpty()){
             int newInt = Integer.parseInt(buncoMessage);
-
             buncoPointsValue = newInt;
         }
 
+
     }
 
+    // Displays points
     public void displayPoints(View view){
         final TextView usScore = (TextView) findViewById(R.id.usScore);
         usScore.setText(String.valueOf(usPoints));
@@ -81,105 +67,140 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
+    // Us Team: Adds Bunco points to Us Score
     public void addUsBunco(View view){
+        //add new undoItem
+        undoItem undoAddUsBunco = new undoItem();
+        undoAddUsBunco.team = "Us";
+        undoAddUsBunco.value = buncoPointsValue;
+
         if(checkNumbers(view, usPoints, buncoPointsValue)){
             usPoints = usPoints + buncoPointsValue;
-            logPointsAdded(buncoPointsValue, true);
+            logPointsAdded(undoAddUsBunco);
             displayPoints(view);
         }
     }
 
+    // Us Team: Adds 5 points to Us Score
     public void addFiveUsScore(View view){
+        //add new undoItem
+        undoItem undoAddFiveUsScore = new undoItem();
+        undoAddFiveUsScore.team = "Us";
+        undoAddFiveUsScore.value = 5;
+
         if(checkNumbers(view, usPoints, 5)) {
             usPoints = usPoints + 5;
-            logPointsAdded(fivePoint, true);
+            logPointsAdded(undoAddFiveUsScore);
             displayPoints(view);
         }
     }
 
+    // Us Team: Adds one points to Us Score
     public void addOneUsScore(View view){
+        //add new undoItem
+        undoItem undoAddOneUsScore = new undoItem();
+        undoAddOneUsScore.team = "Us";
+        undoAddOneUsScore.value = 1;
+
         if(checkNumbers(view, usPoints, 1)) {
             usPoints = usPoints + 1;
-            logPointsAdded(onePoint, true);
+            logPointsAdded(undoAddOneUsScore);
             displayPoints(view);
         }
     }
 
+    // Them Team: Adds Bunco points to Them Score
     public void addThemBunco(View view){
+        //add new undoItem
+        undoItem undoAddThemBunco = new undoItem();
+        undoAddThemBunco.team = "Them";
+        undoAddThemBunco.value = buncoPointsValue;
+
         if(checkNumbers(view, themPoints, buncoPointsValue)) {
             themPoints = themPoints + buncoPointsValue;
-            logPointsAdded(buncoPointsValue, false);
+            logPointsAdded(undoAddThemBunco);
             displayPoints(view);
         }
     }
 
+
+    // Them Team: Adds 5 points to Them Score
     public void addFiveThemScore(View view){
+        //add new undoItem
+        undoItem undoAddFiveThemScore = new undoItem();
+        undoAddFiveThemScore.team = "Them";
+        undoAddFiveThemScore.value = 5;
+
         if(checkNumbers(view, themPoints, 5)) {
             themPoints = themPoints + 5;
-            logPointsAdded(fivePoint, false);
+            logPointsAdded(undoAddFiveThemScore);
             displayPoints(view);
         }
     }
 
+
+    // Them Team: Adds one point to Them Score
     public void addOneThemScore(View view){
+        //add new undoItem
+        undoItem undoAddOneThemScore = new undoItem();
+        undoAddOneThemScore.team = "Them";
+        undoAddOneThemScore.value = 1;
+
         if(checkNumbers(view, themPoints, 1)) {
             themPoints = themPoints + 1;
-            logPointsAdded(onePoint, false);
+            logPointsAdded(undoAddOneThemScore);
             displayPoints(view);
         }
     }
 
+    // Resets for new game.  Points and undoStack
     public void resetGame(View view){
         usPoints = 0;
         themPoints = 0;
         while(!(undoPointsStack.empty())){
             undoPointsStack.pop();
         }
-        while(!(undoPointsType.empty())){
-            undoPointsType.pop();
-        }
-
         displayPoints(view);
     }
 
-    public Stack<Integer> logPointsAdded(Integer pointsPlaceHolder, Boolean pointsplaceHolder2){
+    // Push untoItem onto stack
+    public Stack<undoItem> logPointsAdded(undoItem pointsPlaceHolder){
         // track points added to us or them so can undo if wanted
         logPointsStacked = pointsPlaceHolder;
         undoPointsStack.push(pointsPlaceHolder);
-
-        // for type of point, true is us false is them
-        logPointsType = pointsplaceHolder2;
-        undoPointsType.push(pointsplaceHolder2);
 
         return undoPointsStack;
 
     }
 
+    // Undo last move
     public void undoLast(View view){
-        // track points added to us or them so can undo if wanted
-        // if undoLast clicked
-
-        if(undoPointsStack.size() > 0) {
+        if(!(undoPointsStack.isEmpty())) {
             // find points last logged
             subtractUndoPoints = undoPointsStack.pop();
-            //find team that was logged
-            subtractUndoPointsType = undoPointsType.pop();
 
-            // if team is us ( true ), subtract points from usPoints
-            if(subtractUndoPointsType) {
-                usPoints = usPoints - subtractUndoPoints;
-                tellMeType = "Us";
+            //find team that was logged. if team is us, subtract points from usPoints
+            if(subtractUndoPoints.team == "Us") {
+                usPoints = usPoints - subtractUndoPoints.value;
+                //tellMeType = "Us";
                 // if team is them ( false ), subtract points from themPoints
-            } else if(!subtractUndoPointsType) {
-                themPoints = themPoints -subtractUndoPoints;
-                tellMeType = "Them";
+            } else if(subtractUndoPoints.team == "Them") {
+                themPoints = themPoints -subtractUndoPoints.value;
+                //tellMeType = "Them";
             }
 
             displayPoints(view);
-        }
 
-        Snackbar.make(view, subtractUndoPoints + " points were taken from  " + tellMeType, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+            // display change
+            // Snackbar.make(view, subtractUndoPoints.value + " points were taken from " + subtractUndoPoints.team, Snackbar.LENGTH_LONG)
+            //        .setAction("Action", null).show();
+        }// else {
+         //   Snackbar.make(view, "Cannot undo", Snackbar.LENGTH_SHORT)
+         //           .setAction("Action", null).show();
+        //}
+
+
 
     }
 
@@ -187,8 +208,9 @@ public class MainActivity extends AppCompatActivity {
         Snackbar.make(view, "Points must be under 10,000.", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
+
+    // change to new screen where you can change the points a bunco! adds
     public void switchScreenCustomPoints(View view){
-        // change to new screen where you can change the points a bunco! adds
 
         Intent i = new Intent(this, customBunco.class);
         startActivity(i);

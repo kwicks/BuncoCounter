@@ -1,18 +1,15 @@
 package kate.simkowick.com.buncocounter;
 
+/**
+ * Created by kate on 10/9/17.
+ */
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-
-import java.security.spec.ECField;
-
-/**
- * Created by kate on 10/9/17.
- */
 
 public class customBunco extends AppCompatActivity {
 
